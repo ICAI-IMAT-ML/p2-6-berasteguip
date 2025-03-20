@@ -43,21 +43,23 @@ def cross_validation(model, X, y, nFolds):
 
     print(f'Mean CV Score: {mean_score}, Std Deviation: {std_score}')
     """
+
+    n = X.shape[0]
     if nFolds == -1:
         # Implement Leave One Out CV
-        nFolds = X.shape[0]
+        nFolds = n
 
-    fold_size = int(np.floor(X.shape[0] / nFolds))
+    fold_size = int(np.floor(n / nFolds))
     accuracy_scores = []
 
     for i in range(nFolds):
         # Calculate start and end indices for the validation set
         start_idx = i * fold_size
-        end_idx = start_idx + fold_size if i < nFolds - 1 else X.shape[0]
+        end_idx = start_idx + fold_size if i < nFolds - 1 else n
         valid_indices = list(range(start_idx, end_idx))
 
         # Generate training indices by excluding validation indices
-        train_indices = list(set(range(X.shape[0])) - set(valid_indices))
+        train_indices = np.delete(list(range(0, n)), valid_indices)
 
         # Split the dataset into training and validation
         X_train, X_valid = X[train_indices, :], X[valid_indices, :]
